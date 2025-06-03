@@ -4,46 +4,61 @@ import javax.swing.SwingUtilities;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import com.yut.ui.swing.MainFrame;
-import com.yut.ui.swing.StartScreen;
+import com.yut.ui.javaFX.GameScreenFX;
+import com.yut.ui.javaFX.StartScreenFX;
+import javafx.stage.Stage;
+
+import javafx.scene.Scene;
+
 import com.yut.controller.model_interfaces.GameModelInterface;
 import com.yut.model.Game;
 
 public class TitleController{
     
-    static MainFrame mainFrame;
-    static StartScreen startScreen;
+    StartScreenFX startScreen;
 
-    static GameModelInterface gameModel;
-    static GameController gameController;
+    GameModelInterface gameModel;
+    GameControllerFX gameController;
+    Stage primaryStage;
 
-    public TitleController(MainFrame mainFrame) {
-        this.mainFrame = mainFrame;
+    public TitleController(Stage primaryStage) {
+        this.primaryStage = primaryStage;
     }
 
     public void start(){
-        SwingUtilities.invokeLater(() -> {
+        StartScreenFX startScreen = new StartScreenFX();
+        Scene startScene = new Scene(startScreen, 950, 760);
+        startScene.getStylesheets().add(
+                getClass().getResource("/com/yut/ui/CSS/StartScreenFX.css").toExternalForm());
+        primaryStage.setScene(startScene);
 
-            mainFrame.setVisible(true);
-            mainFrame.showStart();
 
-            startScreen = mainFrame.getStart();
 
-            startScreen.addStartButtonListener(new StartButtonListener());
-        });
-    }
-
-    class StartButtonListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
+        startScreen.setStartButtonListener(() -> {
             int boardType = startScreen.getBoardType();
-            int playerCount = startScreen.getPlayers();
-            int pieceCount = startScreen.getPieces();
+            int playerCount = startScreen.getPlayerCount();
+            int pieceCount = startScreen.getPieceCount();
 
-            gameModel = new Game(boardType, playerCount, pieceCount);
+            // System.out.println("Board Type: " + boardType);
+            // System.out.println("Player Count: " + playerCount);
+            // System.out.println("Piece Count: " + pieceCount);
 
-            mainFrame.showGame(boardType, playerCount, pieceCount);
-            gameController = new GameController(gameModel, mainFrame.getGameScreen());
-        }
+            Game gameModel = new Game(boardType, playerCount, pieceCount);
+
+            GameScreenFX gameScreen = new GameScreenFX(startScene, boardType, playerCount, pieceCount);
+            Scene gameScene = new Scene(gameScreen, 950, 760);
+
+
+            gameScene.getStylesheets().add(
+                    getClass().getResource("/com/yut/ui/CSS/StartScreenFX.css").toExternalForm());
+
+
+            primaryStage.setScene(gameScene);
+            primaryStage.show();
+
+            gameController = new GameControllerFX(gameModel, gameScreen, primaryStage, startScene);
+        });
+
     }
+
 }

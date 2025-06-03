@@ -33,13 +33,40 @@ public class Yut {
 
     private Integer current = null;
 
-    private Yut() {}
+    private int[] yuts;
+
+    private Yut() {
+        yuts = new int[4];
+    }
 
     static Yut getYut() {return instance;}
 
     void rollYutRandomly(){
         Random random = new Random();
-        current = random.nextInt(6);
+        
+        yuts[0] = random.nextInt(4) < 2 ? 1 : 0;
+        yuts[1] = random.nextInt(4) < 2 ? 1 : 0;
+        yuts[2] = random.nextInt(4) < 2 ? 1 : 0;
+        yuts[3] = random.nextInt(4) < 2 ? 1 : 0;
+
+        if(yuts[0] == 0 && yuts[1] == 1 && yuts[2] == 1 && yuts[3] == 1){
+            current = Yut.BACKDO;
+        }
+        else if(yuts[0] + yuts[1] + yuts[2] + yuts[3] == 3){
+            current = Yut.DO;
+        }
+        else if(yuts[0] + yuts[1] + yuts[2] + yuts[3] == 2){
+            current = Yut.GE;
+        }
+        else if(yuts[0] + yuts[1] + yuts[2] + yuts[3] == 1){
+            current = Yut.GUL;
+        }
+        else if(yuts[0] + yuts[1] + yuts[2] + yuts[3] == 0){
+            current = Yut.YUT;
+        }
+        else if(yuts[0] + yuts[1] + yuts[2] + yuts[3] == 4){
+            current = Yut.MO;
+        }
     }
 
     void rollYutSelected(int yut){
@@ -47,7 +74,9 @@ public class Yut {
     }
 
 
-    int getCurrent(){return current;}
+    int[] getCurrent(){
+        return new int[] {current, yuts[0], yuts[1], yuts[2], yuts[3]};
+    }
 
 
 }

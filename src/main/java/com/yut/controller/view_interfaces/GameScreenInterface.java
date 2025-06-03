@@ -1,46 +1,66 @@
 package com.yut.controller.view_interfaces;
 
-import com.yut.ui.swing.ClickableNode;
+import com.yut.ui.javaFX.ClickableNodeFX;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 
-import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 import java.util.Deque;
 import java.util.Map;
 
 public interface GameScreenInterface {
-    // public void select(int nodeID);
-    public void showMovePreview(int nodeID, int playerID);
 
-    public void deleteMovePreview();
+    // 말 이동 미리보기 원 추가
+    void showMovePreview(int nodeID, int playerID);
 
-    public void drawPiece(int nodeID, int playerID, int pieceNumber);
+    // 미리보기 제거
+    void deleteMovePreview();
 
-    public void deletePiece(int nodeID);
+    // 말 그리기
+    void drawPiece(int nodeID, int playerID, int pieceNumber);
 
-    public void updatePlayerCanvas(int playerID, int pieceCount);
+    // 말 제거
+    void deletePiece(int nodeID);
 
+    // 플레이어 캔버스 업데이트
+    void updatePlayerCanvas(int playerID, int pieceCount);
+
+    // 현재 차례인 플레이어 강조
     void highlightCurrentPlayer(int playerId);
 
-    public void select(int nodeID);
+    // 말 선택 사각형 표시
+    void select(int nodeID);
 
-    public void updateRandomResult(int yut);
+    // 윷 결과(도/개/걸/윷/모 등) 반영
+    void updateRandomResult(int yut[]);
 
-    public void printDeckContents(Deque<Integer> deck);
-    
-    // 힌트가 있는 노드인지 = 1, 빈 노드인지 = 2, 말이 있는 노드인지 = 3;
-    public int getNodeState(int nodeID);
+    // 현재 덱 상태 출력
+    void printDeckContents(Deque<int[]> deck);
 
-    public void addRandomThrowButtonListener(ActionListener listener);
+    // 노드 상태 반환 (힌트/빈칸/말 있는 칸)
+    int getNodeState(int nodeID);
 
-    public void addSelectedThrowButtonListener(int index, ActionListener listener);
+    // 랜덤 던지기 버튼 리스너
+    void addRandomThrowButtonListener(EventHandler<ActionEvent> listener);
 
-    public void addBackButtonListener(ActionListener listener);
+    // 선택 던지기 버튼 리스너 (여러 개일 경우 index로 구분)
+    void addSelectedThrowButtonListener(EventHandler<ActionEvent> listener);
 
-    public void addNodeClickListener(ClickableNode node, MouseListener listener);
-    public void addMoveNewPieceButtonListener(ActionListener listener); 
-    public void addGoalButtonListener(ActionListener listener);
-    public void setGoalButtonVisible(boolean visible);
+    // 뒤로가기 버튼 리스너
+    void addBackButtonListener(EventHandler<ActionEvent> listener);
 
+    // 노드 클릭 이벤트 연결
+    void addNodeClickListener(ClickableNodeFX node, EventHandler<MouseEvent> listener);
 
-    public Map<Integer, ClickableNode> getNodeMap();
+    // 새 말 내보내기 버튼 리스너
+    void addMoveNewPieceButtonListener(EventHandler<ActionEvent> listener);
+
+    // 골 버튼 리스너
+    void addGoalButtonListener(EventHandler<ActionEvent> listener);
+
+    // 골 버튼 보이기/숨기기
+    void setGoalButtonVisible(boolean visible);
+
+    // 노드 맵 제공
+    Map<Integer, ClickableNodeFX> getNodeMap();
 }
