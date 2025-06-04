@@ -14,7 +14,7 @@ public class Player {
     }
     Player(int id, int numOfPieces){
         this.id = id;
-        Player.numOfTotalPieces = numOfPieces;
+        this.numOfTotalPieces = numOfPieces;
         this.numOfCurrentPieces = numOfPieces;
     }
 
