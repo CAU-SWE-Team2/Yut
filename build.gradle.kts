@@ -1,12 +1,12 @@
 plugins {
     application
     java
-    id("org.openjfx.javafxplugin") version "0.0.13"
 }
+
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -20,15 +20,14 @@ repositories {
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    implementation ("org.openjfx:javafx-controls:20")
-    implementation ("org.openjfx:javafx-fxml:20")
 }
 
-javafx {
-    version = "21"
-    modules = listOf("javafx.controls", "javafx.fxml")
+tasks.test {
+    useJUnitPlatform()
 }
+
+
 
 application {
-    mainClass.set("com.yut.Main")
+    mainClass.set("com.yut.ui.swing.GameWindow")
 }
